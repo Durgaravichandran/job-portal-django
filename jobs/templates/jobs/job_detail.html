@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ job.title }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>{{ job.title }}</h1>
+
+            <p>
+                <strong>Company:</strong>
+                {{ job.company.name }}
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                {{ job.location }}
+            </p>
+
+            <p>
+                <strong>Job Type:</strong>
+                {{ job.get_job_type_display }}
+            </p>
+
+            <p>
+                <strong>Experience:</strong>
+                {{ job.experience }}
+            </p>
+
+            <p>
+                <strong>Salary:</strong>
+                {{ job.salary }}
+            </p>
+
+            <p>
+                <strong>Skills:</strong>
+                {{ job.skills }}
+            </p>
+
+            <hr>
+
+            <h3>Job Description</h3>
+
+            <p>
+                {{ job.description }}
+            </p>
+
+            <hr>
+
+            {% if user.is_authenticated and user.profile.user_type == 'job_seeker' %}
+
+                <a
+                    href="{% url 'apply_for_job' job.id %}"
+                    class="btn"
+                >
+                    Apply Now
+                </a>
+
+            {% elif not user.is_authenticated %}
+
+                <a
+                    href="{% url 'login' %}"
+                    class="btn"
+                >
+                    Login to Apply
+                </a>
+
+            {% endif %}
+
+            <br><br>
+
+            <a href="{% url 'job_list' %}">
+                Back to Jobs
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

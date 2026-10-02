@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Applications</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>My Applications</h1>
+
+        {% if applications %}
+
+            {% for application in applications %}
+
+                <div class="card">
+
+                    <h2>{{ application.job.title }}</h2>
+
+                    <p>
+                        <strong>Company:</strong>
+                        {{ application.job.company.name }}
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        {{ application.job.location }}
+                    </p>
+
+                    <p>
+                        <strong>Applied On:</strong>
+                        {{ application.applied_at }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="status">
+                            {{ application.get_status_display }}
+                        </span>
+                    </p>
+
+                    {% if application.resume %}
+                        <p>
+                            <strong>Resume:</strong>
+
+                            <a
+                                href="{{ application.resume.url }}"
+                                target="_blank"
+                            >
+                                View Resume
+                            </a>
+                        </p>
+                    {% endif %}
+
+                    {% if application.cover_letter %}
+                        <p>
+                            <strong>Cover Letter:</strong>
+                        </p>
+
+                        <p>
+                            {{ application.cover_letter }}
+                        </p>
+                    {% endif %}
+
+                    <br>
+
+                    <a
+                        href="{% url 'job_detail' application.job.id %}"
+                        class="btn"
+                    >
+                        View Job
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="card">
+
+                <p>
+                    You have not applied for any jobs yet.
+                </p>
+
+                <a
+                    href="{% url 'job_list' %}"
+                    class="btn"
+                >
+                    Search Jobs
+                </a>
+
+            </div>
+
+        {% endif %}
+
+        <br>
+
+        <a href="{% url 'dashboard' %}">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+</html>

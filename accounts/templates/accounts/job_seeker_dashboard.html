@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Seeker Dashboard</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>Job Seeker Dashboard</h1>
+
+            <p>
+                Welcome, {{ user.username }}
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Job Seeker Menu</h2>
+
+            <p>
+                <a href="{% url 'job_list' %}" class="btn">
+                    Search Jobs
+                </a>
+            </p>
+
+            <p>
+                <a href="{% url 'my_applications' %}" class="btn">
+                    My Applications
+                </a>
+            </p>
+
+            <p>
+                <a href="{% url 'profile' %}" class="btn">
+                    My Profile
+                </a>
+            </p>
+
+            <p>
+                <a href="{% url 'logout' %}" class="btn">
+                    Logout
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Applicants - {{ job.title }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Applicants for {{ job.title }}</h1>
+
+        {% if applications %}
+
+            {% for application in applications %}
+
+                <div class="card">
+
+                    <h2>{{ application.applicant.username }}</h2>
+
+                    <p>
+                        <strong>Email:</strong>
+                        {{ application.applicant.email }}
+                    </p>
+
+                    <p>
+                        <strong>Applied On:</strong>
+                        {{ application.applied_at }}
+                    </p>
+
+                    <p>
+                        <strong>Current Status:</strong>
+                        <span class="status">
+                            {{ application.get_status_display }}
+                        </span>
+                    </p>
+
+                    {% if application.resume %}
+                        <p>
+                            <strong>Resume:</strong>
+
+                            <a
+                                href="{{ application.resume.url }}"
+                                target="_blank"
+                            >
+                                View Resume
+                            </a>
+                        </p>
+                    {% endif %}
+
+                    {% if application.cover_letter %}
+
+                        <p>
+                            <strong>Cover Letter:</strong>
+                        </p>
+
+                        <p>
+                            {{ application.cover_letter }}
+                        </p>
+
+                    {% endif %}
+
+                    <hr>
+
+                    <form
+                        method="POST"
+                        action="{% url 'update_application_status' application.id %}"
+                    >
+
+                        {% csrf_token %}
+
+                        <label>
+                            Change Status:
+                        </label>
+
+                        <select name="status">
+
+                            <option
+                                value="applied"
+                                {% if application.status == 'applied' %}selected{% endif %}
+                            >
+                                Applied
+                            </option>
+
+                            <option
+                                value="shortlisted"
+                                {% if application.status == 'shortlisted' %}selected{% endif %}
+                            >
+                                Shortlisted
+                            </option>
+
+                            <option
+                                value="rejected"
+                                {% if application.status == 'rejected' %}selected{% endif %}
+                            >
+                                Rejected
+                            </option>
+
+                            <option
+                                value="selected"
+                                {% if application.status == 'selected' %}selected{% endif %}
+                            >
+                                Selected
+                            </option>
+
+                        </select>
+
+                        <button type="submit">
+                            Update Status
+                        </button>
+
+                    </form>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="card">
+                <p>No applicants yet.</p>
+            </div>
+
+        {% endif %}
+
+        <br>
+
+        <a href="{% url 'my_jobs' %}">
+            Back to My Jobs
+        </a>
+
+    </div>
+
+</body>
+</html>
